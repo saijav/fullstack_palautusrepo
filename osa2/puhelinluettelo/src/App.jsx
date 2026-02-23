@@ -1,12 +1,15 @@
 import { useState, useEffect } from 'react'
 import {PersonForm, Persons, Filter} from './components/Components'
 import personService from './services/persons'
+import Notification from './components/Notification'
+import './index.css'
 
 const App = () => {
   const [persons, setPersons] = useState([]) 
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [newFilter, setNewFilter] = useState('')
+  const [errorMessage, setErrorMessage] = useState()
 
   const hook = () => {
     console.log('effect')
@@ -39,6 +42,12 @@ const App = () => {
           setPersons(persons.concat(returnedPerson))
           setNewName('')
           setNewNumber('')
+          setErrorMessage(
+          `Added ${returnedPerson.name}`
+        )
+        setTimeout(() => {
+          setErrorMessage(null)
+        }, 5000)
         })
      }
       
@@ -52,6 +61,12 @@ const App = () => {
         .then(() => {
           setPersons(persons.filter(n => n.id !== id))
         })
+        setErrorMessage(
+          `Deleted ${person.name}`
+        )
+        setTimeout(() => {
+          setErrorMessage(null)
+        }, 5000)
         .catch(error => {
           alert(
             `The person '${person.name}' was already deleted from server`
@@ -70,6 +85,12 @@ const App = () => {
         setNewName('')
         setNewNumber('')
       })
+      setErrorMessage(
+          `Updated the number for ${newObject.name}`
+        )
+        setTimeout(() => {
+          setErrorMessage(null)
+        }, 5000)
       .catch(error => {
         alert(
           `Information of '${newObject.name}' has already been removed from server`
@@ -101,6 +122,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={errorMessage} />
       <Filter
       filter={newFilter}
       handleFilterChange={handleFilterChange}/>
