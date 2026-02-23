@@ -1,4 +1,4 @@
-const PersonForm = ({addPerson, newName, handlePersonChange, newNumber, handleNumberChange}) => {
+const PersonForm = ({addPerson, newName, handlePersonChange, newNumber, handleNumberChange, deletePerson}) => {
     return (
         <form onSubmit={addPerson}>
         <div> name: <input 
@@ -19,11 +19,11 @@ const PersonForm = ({addPerson, newName, handlePersonChange, newNumber, handleNu
     )
 }
 
-const Persons = ({persons}) => {
+const Persons = ({persons, deletePerson}) => {
     return (
         <ul>
-        {persons.map((person, index) => (
-          <li key={index}> {person.name} {person.number}</li>
+        {persons.map(person => (
+          <li key={person.id}> {person.name} {person.number} <button onClick={() => deletePerson(person.id)}>delete</button></li>
         ))}
       </ul>
     )
